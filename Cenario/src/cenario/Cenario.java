@@ -76,14 +76,14 @@ public class Cenario {
                     Mensagem("Para continuar é necessário informar todos os campos!");
                     return;
                 }
-                //if (!validaIP(IP)) {
-                //    Mensagem("Informe um número de IP válido!");
-                //    return;
-                //}
-                //if (!validaPorta(porta)) {
-                //    Mensagem("Informe um número de PORTA válido!");
-                //    return;
-                //}
+                if (!validaIP(IP)) {
+                    Mensagem("Informe um número de IP válido!");
+                    return;
+                }
+                if (!validaPorta(porta)) {
+                    Mensagem("Informe um número de PORTA válido!");
+                    return;
+                }
                 setJogador(nome, IP, Integer.parseInt(porta));
                 SelecionarPersonagem();
             }
