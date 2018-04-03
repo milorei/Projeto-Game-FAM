@@ -29,6 +29,28 @@ public class Cenario {
     }
     
     //Métodos Criadores de Janela
+    public JFrame SplashScreen(){
+        CriarNovaJanela(660,585);
+        JPanel painel = new JPanel();
+        painel.setLayout(new BorderLayout());
+        ImageIcon imagemSplashScreen = new ImageIcon(Cenario.class.getResource("SplashScreenMontada.png"));
+        JLabel labelImagem = new JLabel(imagemSplashScreen);
+        painel.add(labelImagem, BorderLayout.NORTH);
+        JButton iniciarJogo = CriarBotao("INICIAR JOGO","", 15, true, Color.gray);
+        JButton teste = new JButton("teste");
+        iniciarJogo.addActionListener(new ActionListener(){
+            //Quando botão for clicado
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                CadastraJogador();
+            }
+        });
+        iniciarJogo.setFocusPainted(false);
+        painel.add(iniciarJogo, BorderLayout.SOUTH);
+        this.janela.add(painel);
+        this.janela.setVisible(true);
+        return janela;
+    }
     public JFrame CadastraJogador(){
         //Remove todos os componentes da janela e redimensiona para incluir novos componentes
         CriarNovaJanela(450,350);
@@ -104,6 +126,7 @@ public class Cenario {
         this.janela.add(CriarLabel("SELECIONE O SEU PERSONAGEM:","", 25, true));
         this.janela.add(CriarPersonagem(new Personagem("PIKACHU", "RAIO",10, 35,155,"1.png")));
         this.janela.add(CriarPersonagem(new Personagem("BULBASSAURO", "PLANTA",7, 30,170,"2.png")));
+        this.janela.add(CriarPersonagem(new Personagem("AINDA NÃO DEI UM NOME", "PEDRA",12, 40,200,"3.png")));
         return this.janela;
     }
     
@@ -125,6 +148,10 @@ public class Cenario {
         Font fonte = new Font(nomeFonte.equals("") ? "" : nomeFonte, negrito ? Font.BOLD : 0, tamanhoFonte == 0 ? 10 : tamanhoFonte);
         botao.setFont(fonte);
         botao.setBackground(Cor);
+        return botao;
+    }
+    private JButton CriarBotao(String textoBotao){
+        JButton botao = new JButton(textoBotao);
         return botao;
     }
     private void CriarNovaJanela(int width, int height){

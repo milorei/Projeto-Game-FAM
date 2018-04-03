@@ -6,7 +6,9 @@
 package cenario;
 
 import javax.swing.JFrame;
-
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Bruno
@@ -15,8 +17,7 @@ public class Jogo {
     public static void main(String[] args){
         JFrame janela;
         Cenario cenario = new Cenario();
-        janela = cenario.CadastraJogador();
+        janela = cenario.SplashScreen();
         janela.setVisible(true);
-        
     }
 }
