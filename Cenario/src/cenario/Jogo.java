@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 /**
  *
  * @author Bruno
@@ -18,6 +19,7 @@ public class Jogo {
         JFrame janela;
         Cenario cenario = new Cenario();
         janela = cenario.SplashScreen();
+    
         janela.setVisible(true);
     }
 }
