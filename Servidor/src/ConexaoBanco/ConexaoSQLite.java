@@ -49,9 +49,20 @@ public class ConexaoSQLite {
             return rs;
         }
     }
-    
-    public static boolean FazerUmaOperacaoNoBanco(String Query){
+
+    public static boolean FazerUmaOperacaoNoBanco(String Query) {
         return true;
+    }
+
+    public static PersonagemDTO CriarPersonagem(String Nome, int Vida, int AtaqueBasico, int AtaqueEspecial, String TipoPoder) {
+        PersonagemDTO personagem = new PersonagemDTO();
+        personagem.Nome = Nome;
+        personagem.Vida = Vida;
+        personagem.AtaqueBasico = AtaqueBasico;
+        personagem.AtaqueEspecial = AtaqueEspecial;
+        personagem.TipoPoder = TipoPoder;
+        FazerUmaOperacaoNoBanco("INSERT INTO Personagem(Nome, Vida, AtaqueBasico, AtaqueEspecial, TipoPoder) VALUES (" + Nome + "," + Vida + "," + AtaqueBasico + "," + AtaqueEspecial + "," + TipoPoder + ")");
+        return personagem;
     }
 
     public static PersonagemDTO SelecionarPersonagemPeloId(int Id) {
@@ -76,7 +87,7 @@ public class ConexaoSQLite {
         }
         return personagem;
     }
-    
+
     public static PersonagemDTO SelecionarPersonagemPeloNome(String Nome) {
         PersonagemDTO personagem = new PersonagemDTO();
         ResultSet rs = null;
@@ -99,7 +110,16 @@ public class ConexaoSQLite {
         }
         return personagem;
     }
-    
+
+    public static JogadorDTO CriarJogador(String Nome, String IP, String Porta) {
+        JogadorDTO jogador = new JogadorDTO();
+        jogador.IP = IP;
+        jogador.Nome = Nome;
+        jogador.Porta = Porta;
+        FazerUmaOperacaoNoBanco("INSERT INTO Jogador(Nome, IP, Porta) VALUES (" + Nome + "," + IP + "," + Porta + ")");
+        return jogador;
+    }
+
     public static JogadorDTO SelecionarJogadorPeloId(int Id) {
         JogadorDTO jogador = new JogadorDTO();
         ResultSet rs = null;
@@ -108,7 +128,7 @@ public class ConexaoSQLite {
             while (rs.next()) {
                 jogador.Id = rs.getInt("Id");
                 jogador.Personagem = SelecionarPersonagemPeloId(rs.getInt("IdPersonagem"));
-                jogador.Nome = rs.getString("Nome");                
+                jogador.Nome = rs.getString("Nome");
                 jogador.IP = rs.getString("IP");
                 jogador.Porta = rs.getString("Porta");
             }
@@ -119,7 +139,7 @@ public class ConexaoSQLite {
         }
         return jogador;
     }
-    
+
     public static JogadorDTO SelecionarJogadorPeloNome(String Nome) {
         JogadorDTO jogador = new JogadorDTO();
         ResultSet rs = null;
@@ -128,7 +148,7 @@ public class ConexaoSQLite {
             while (rs.next()) {
                 jogador.Id = rs.getInt("Id");
                 jogador.Personagem = SelecionarPersonagemPeloId(rs.getInt("IdPersonagem"));
-                jogador.Nome = rs.getString("Nome");                
+                jogador.Nome = rs.getString("Nome");
                 jogador.IP = rs.getString("IP");
                 jogador.Porta = rs.getString("Porta");
             }
@@ -138,5 +158,57 @@ public class ConexaoSQLite {
             System.exit(0);
         }
         return jogador;
+    }
+
+    public static BatalhaDTO CriarBatalha(int IdJogador1) {
+        JogadorDTO jogador1 = SelecionarJogadorPeloId(IdJogador1);
+        PersonagemDTO personagem = jogador1.Personagem;
+        BatalhaDTO batalha = new BatalhaDTO();
+        batalha.IdJogador1 = IdJogador1;
+        batalha.VidaPersonagemJogador1 = personagem.getVida();
+        FazerUmaOperacaoNoBanco("INSERT INTO Batalha(IdJogador1, VidaPersonagemJogador1) VALUES (" + batalha.IdJogador1 + "," + batalha.VidaPersonagemJogador1 + ")");
+        return batalha;
+    }
+    
+    public static JogadorDTO SelecionarBatalhaPeloId(int Id) {
+        JogadorDTO jogador = new JogadorDTO();
+        ResultSet rs = null;
+        try {
+            rs = PesquisarNoBanco("SELECT * FROM Jogador WHERE Id = " + Id);
+            while (rs.next()) {
+                jogador.Id = rs.getInt("Id");
+                jogador.Personagem = SelecionarPersonagemPeloId(rs.getInt("IdPersonagem"));
+                jogador.Nome = rs.getString("Nome");
+                jogador.IP = rs.getString("IP");
+                jogador.Porta = rs.getString("Porta");
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return jogador;
+    }
+
+    public static BatalhaDTO SelecionarUltimaBatalhaPeloIdJogador(int IdJogador) {
+        BatalhaDTO batalha = new BatalhaDTO();
+        ResultSet rs = null;
+        try {
+            rs = PesquisarNoBanco("SELECT TOP 1 * FROM Batalha WHERE IdJogador1 = " + IdJogador + " OR IdJogador2 = " + IdJogador + " OrderBy Id Desc");
+            while (rs.next()) {
+                batalha.IdBatalha = rs.getInt("Id");
+                batalha.IdJogador1 = rs.getInt("IdJogador1");
+                batalha.IdJogador2 = rs.getInt("IdJogador2");
+                batalha.VidaPersonagemJogador1 = rs.getInt("VidaPersonagemJogador1");
+                batalha.VidaPersonagemJogador2 = rs.getInt("VidaPersonagemJogador2");
+                batalha.IdJogadorVencedor = rs.getInt("IdJogadorVencedor");
+                batalha.IdJogadorPerdedor = rs.getInt("IdJogadorPerdedor");
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return batalha;
     }
 }
