@@ -3,7 +3,6 @@ import ConexaoBanco.*;
 import java.io.DataInputStream;
 import java.io.PrintStream;
 import java.io.IOException;
-import static java.lang.System.out;
 import java.net.Socket;
 import java.net.ServerSocket;
 
@@ -13,40 +12,34 @@ public class Servidor {
     private static ServerSocket serverSocket = null;
     // O soquete do cliente .
     private static Socket clienteSocket = null;
-
+    // Objeto para manipular dados do banco de dados
+    private static ConexaoSQLite conexaoSQLite = new ConexaoSQLite();
+    // Dados em que o servidor está conectado
+    private static int PortaServidor = 0;
+    private static String IPServidor = "";
+    
+    private static Utils utils = new Utils();
     // aqui estou definindo 5 jogadores
     private static final int Quantidadedejogador = 2;
     private static final clientThread[] threads = new clientThread[Quantidadedejogador];
 
     public static void main(String args[]) {
+        //Exemplo de utilização do objeto conexaoSQLite
+        //PersonagemDTO personagem1 = conexaoSQLite.SelecionarPersonagemPeloId(1);
         
-        ConexaoSQLite conexaoSQLite = new ConexaoSQLite();
-        PersonagemDTO personagem1 = conexaoSQLite.SelecionarPersonagemPeloId(1);
-        PersonagemDTO personagem2 = conexaoSQLite.SelecionarPersonagemPeloId(2);
-        PersonagemDTO personagem3 = conexaoSQLite.SelecionarPersonagemPeloId(3);
+        //Pega IP e Porta do servidor
+        IPServidor = utils.getIP();
+        PortaServidor = utils.getPorta();
         
-        JogadorDTO jogador1 = conexaoSQLite.SelecionarJogadorPeloId(1);
-        JogadorDTO jogador2 = conexaoSQLite.SelecionarJogadorPeloId(2);
-        JogadorDTO jogador3 = conexaoSQLite.SelecionarJogadorPeloId(3);        
-        
-        // servidor consultando se o bando de dados ja esta conectado
-        out.println(ConexaoMySQL.statusConection());
-
-        // chamando o metodo para conectar ao banco de dados
-        ConexaoMySQL.getConexaoMySQL();
-        out.println(ConexaoMySQL.statusConection());
-
-        // porta padrao.
-        int Numerodaporta = 2222;
         if (args.length < 1) {
             System.out
-                    .println("porta conectada " + Numerodaporta);
+                    .println("porta conectada " + PortaServidor);
         } else {
-            Numerodaporta = Integer.valueOf(args[0]).intValue();
+            PortaServidor = Integer.valueOf(args[0]).intValue();
         }
 
         try {
-            serverSocket = new ServerSocket(Numerodaporta);
+            serverSocket = new ServerSocket(PortaServidor);
         } catch (IOException e) {
             System.out.println(e);
         }

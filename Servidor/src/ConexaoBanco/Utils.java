@@ -59,4 +59,10 @@ public class Utils {
         }
         return letter;
     }
+    public String getIP(){
+        return "";
+    }
+    public int getPorta(){
+        return 0;
+    }
 }
