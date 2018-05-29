@@ -12,4 +12,14 @@ package ConexaoBanco;
 public class PersonagemDTO {
     public static String Nome, TipoPoder, ImagemAtaqueBasico, ImagemAtaqueEspecial;
     public static int Id, AtaqueBasico, AtaqueEspecial, Vida;
+    
+    public int getId(){
+        return this.Id;
+    }
+    public String getNome(){
+        return this.Nome;
+    }
+    public int getVida(){
+        return this.Vida;
+    }
 }
