@@ -1,10 +1,8 @@
 
 import ConexaoBanco.*;
-import java.io.DataInputStream;
-import java.io.PrintStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.ServerSocket;
+import Entidades.*;
+import java.io.*;
+import java.net.*;
 
 public class Servidor {
 
@@ -17,6 +15,8 @@ public class Servidor {
     // Dados em que o servidor está conectado
     private static int PortaServidor = 0;
     private static String IPServidor = "";
+    // Objeto que será usado para trafegar dados pela rede
+    private static ObjetaoSocket objetaoSocket = new ObjetaoSocket();
     
     private static Utils utils = new Utils();
     // aqui estou definindo 5 jogadores
