@@ -5,6 +5,9 @@
  */
 package ConexaoBanco;
 
+import Entidades.BatalhaDTO;
+import Entidades.PersonagemDTO;
+import Entidades.JogadorDTO;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
